@@ -5,7 +5,7 @@ function fftwave(u, v, rows, sz)
     if (nargin == 3)
         sz = 128; 
     end
-    if(rows == 0)||(rows > 3)
+    if(rows <= 0)||(rows > 3)
         error('rows must be either 1,2 or 3')
     end
     Fhat = zeros(sz);
@@ -29,7 +29,7 @@ function fftwave(u, v, rows, sz)
     wavelength =sz./(sqrt(vc^2+uc^2));
     
     % FFT is implemented using a factor 1 in the FFT-routine, and factor 1/N2 in the inverse.
-    amplitude = 1/(sz^2)*sum(sum(abs(F)));
+    amplitude = 1/(sz^2);%*sum(sum(abs(F)));
     %amplitude = abs(Fhat(u,v)/(sz^2))%
     
     subplot(rows, 2, 1);

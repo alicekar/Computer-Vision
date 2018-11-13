@@ -78,5 +78,125 @@ classdef Lab1
             showgrey(log(0.00001 + abs(fftshift(Hhat))));
             title('Hhat with fftshift command and constant = 0.00001')
         end
+        
+        function question10()
+            close all;
+            F = [zeros(56, 128); ones(16, 128); zeros(56, 128)];  
+            G = F';
+            Fhat = fft2(F);
+            Ghat = fft2(G);
+            
+            % This operation uses padding which results in a matrix of size 
+            % 255 x 255, thus we take out the relevant center part, 128x128
+            FC = conv2(fftshift(Fhat),fftshift(Ghat),'same');
+            FC = fftshift(FC);
+            
+            % Each new element value is the sum of 128x128 new values,
+            % therefore we must normalize the new matrix
+            FC = FC/(128^2);
+            
+            figure()
+            showgrey(F .* G);
+            title('Image FG')
+            
+            figure()
+            showfs(fft2(F .* G));
+            title('Fourier transform of FG, F(FG)')
+            
+            % Covolved F(F)*F(G)
+            figure()
+            showfs(FC);
+            title('Convolution of F(F) and F(G), F(F)*F(G)')
+        end
+        
+        function question11()
+            close all;
+            F = [zeros(60, 128); ones(8, 128); zeros(60, 128)] .* ...
+                [zeros(128, 48) ones(128, 32) zeros(128, 48)];
+            Fhat = fft2(F);
+             
+            figure()
+            showgrey(F);
+            title('Image F')
+             
+            figure()
+            showfs(Fhat);
+            title('Fourier spectra of F, Fhat')
+        end
+        
+        function question12(angles)
+            close all;
+            F = [zeros(60, 128); ones(8, 128); zeros(60, 128)] .* ...
+                [zeros(128, 48) ones(128, 32) zeros(128, 48)];
+            Fhat = fft2(F);
+            alpha = 30;
+            G = rot(F, alpha); 
+            Ghat = fft2(G);
+            Hhat = rot(fftshift(Ghat), -alpha);
+            
+            figure()
+            showfs(Fhat);
+            title('Fourier spectra of F, Fhat')
+            
+            figure()
+            showgrey(G)
+            axis on
+            title('Image G = F rotated 30 degrees')
+            
+            figure()
+            showfs(Ghat)
+            title('Fourier spectra of G, Ghat')
+            
+            figure()
+            showgrey(log(1 + abs(Hhat)))
+            title('Fourier spectra of G rotated back 30 degrees')
+            
+            figure()
+            for i = 1:length(angles)
+                alpha = angles(i);
+                G = rot(F, alpha); 
+                Ghat = fft2(G);
+                Hhat = rot(fftshift(Ghat), -alpha);
+                
+                subplot(length(angles),3,1+3*(i-1))
+                showgrey(G);
+                title(sprintf('G rot. %d', alpha))
+                
+                subplot(length(angles),3,2+3*(i-1))
+                showfs(Ghat)
+                title('Ghat')
+                
+                subplot(length(angles),3,3+3*(i-1))
+                showgrey(log(1 + abs(Hhat)))
+                title(sprintf('Spec. rot.back %d', alpha))
+            end
+        end
+        
+        function question13()
+            close all;
+            pics = zeros(128,128,3);
+            pics(:,:,1) = phonecalc128;
+            pics(:,:,2) = few128;
+            pics(:,:,3) = nallo128;
+            alpha = 10e-10;
+            
+            figure()
+            for i = 1:3
+                subplot(3,3,1+3*(i-1));
+                showgrey(pics(:,:,i))
+                
+                %img_hat = fft2(pics(:,:,i));
+                %figure()
+                %showfs(img_hat)
+                
+                pow = pow2image(pics(:,:,i), alpha);
+                subplot(3,3,2+3*(i-1));
+                showgrey(pow)
+                
+                rand = randphaseimage(pics(:,:,i));
+                subplot(3,3,3+3*(i-1));
+                showgrey(rand)
+            end
+        end    
     end
 end

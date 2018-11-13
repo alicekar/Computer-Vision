@@ -31,3 +31,23 @@ Lab1.question5();
 
 Lab1.question7();
 %keyboard
+%%
+% Question: The operation F.*G performs a element-wise multiplication for 
+% the matrix elements of F and G. Since F and G only contain pixel values 
+% that are 0 (black) or 1 (white), the resulting matrix will only be white 
+% where both F and G are white, i.e. in the center square, 16x16. 
+Lab1.question10();
+%keyboard
+
+%%
+Lab1.question11();
+%keyboard
+
+%%
+%angles = [0,30,45,60,90];
+angles = [0,45,60];
+Lab1.question12(angles);
+%keyboard
+
+%%
+Lab1.question13();
