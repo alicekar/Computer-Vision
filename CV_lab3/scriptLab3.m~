@@ -23,7 +23,7 @@ clear all;
 Lab3.Q2_3(6,1)
 
 %% Question 2.4
-Lab3.Q2_4(5,10)
+Lab3.Q2_4(7)
 
 %%
 clear all;

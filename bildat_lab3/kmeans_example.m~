@@ -12,12 +12,11 @@ h = fspecial('gaussian', [d d], image_sigma);
 I = imfilter(I, h);
 
 tic
-%[ segm, centers ] = kmeans_segm2(I, 13, L, 'random', 1, 1, 'img');
-[ segm, centers, conv] =kmeans_segm(I, 13, L, 1);
+%[ segm, centers ] = kmeans_segm2(I, K, L, 'random', 1, 1, 'img');
+[ segm, centers ] =kmeans_segm(I, K, L, seed);
 toc
 Inew = mean_segments(Iback, segm);
 I = overlay_bounds(Iback, segm);
-%conv
 figure()
 subplot(1,2,1)
 imshow(Inew)
