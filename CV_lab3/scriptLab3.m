@@ -14,16 +14,26 @@ K = 10;               % number of clusters used
 L = 25;              % number of iterations
 scale_factor = 1.0;  % image downscale factor
 image_sigma = 1.0;   % image preblurring scale
-iters = 100;
+iters = 1%00;
 
-Lab3.Q2_2(I,K,L,scale_factor,image_sigma,iters)
+Lab3.Q2(I,K,L,scale_factor,image_sigma,iters)
 %keyboard
-%% Question 2.3
-clear all;
-Lab3.Q2_3(6,1)
 
-%% Question 2.4
-Lab3.Q2_4(5,10)
+%% Question 3
+clear all;
+% first arg = K, second is decrease in K
+Lab3.Q3(6,1)
+%keyboard
+
+%% Question 4
+% args = two K-values
+Lab3.Q4(5,10)
+%keyboard
+%% Question 5
+% args = s_band, c_band
+I = imread('orange.jpg');
+Lab3.Q5(7,4,I)
+%keyboard
 
 %%
 clear all;
@@ -31,39 +41,9 @@ close all;
 im = imread('orange.jpg');
 size(im)
 im(:,:,1);
-%kmeans_segm(im, 8, 8, 3);
+[segmentation, centers ]=kmeans_segm(im, 8, 8, 3);
 im(1,1,:)
 size(im)
-H = size(im,1);
-W = size(im,2);
-I_flat = reshape(im,H*W,3);
-I_flat = double(I_flat);
-size(I_flat,1)
-I_flat(30000,:)
-randi([1 10],1,3)
-randperm(size(I_flat,1), 20)
-centers = datasample(I_flat,4,'Replace',false)
+class(centers)
 
-
-h = [1,3,4,3; 9,9,9,9];
-min(h,[],2);
-k = [0,2,3,4;2,3,6,1];
-b=h-k;
-sum(sum(b));
-
-
-l = [9,8,7]
-zeros(1,10)
-o=string(unique(l))
-j=num2cell(o)
-a=strrep(o,char(91),'')
-u = num2cell(a)
-
-
-
-    
-b={'yes','no','undecided'}
-
-    
-    
 

@@ -1,6 +1,6 @@
 classdef Lab3
     methods(Static)
-        function Q2_2(I,K,L,scale_factor,image_sigma,iters)
+        function Q2(I,K,L,scale_factor,image_sigma,iters)
             close all;
             I = imresize(I, scale_factor);
             Iback = I;
@@ -13,7 +13,7 @@ classdef Lab3
             conv_points = [];
             for i = 1:iters
                 tic
-                [ segm, centers, conv, error] =kmeans_segm(I, K, L, 0,0);
+                [ segm, centers, conv, error] =kmeans_segm2(I, K, L, 0,0);
                 conv_points = [conv_points, conv];
                 all_errors(i,:) = error;
                 toc
@@ -46,7 +46,7 @@ classdef Lab3
             
         end
         
-        function Q2_3(K,diff)
+        function Q3(K,diff)
             close all;
             I = imread('orange.jpg');
             L = 15;              % number of iterations
@@ -61,14 +61,14 @@ classdef Lab3
             
             % Calc for K-1 to show difference
             tic
-            [ segm, centers, conv, error] =kmeans_segm(I, K-diff, L, 0,0);
+            [ segm, centers, conv, error] =kmeans_segm2(I, K-diff, L, 0,0);
             toc
             Inew1 = mean_segments(Iback, segm);
             I1 = overlay_bounds(Iback, segm);
             
             % Show simulation for K
             tic
-            [ segm, centers, conv, error] =kmeans_segm(I, K, L, 1,1);
+            [ segm, centers, conv, error] =kmeans_segm2(I, K, L, 1,0);
             toc
             Inew2 = mean_segments(Iback, segm);
             I2 = overlay_bounds(Iback, segm);
@@ -88,12 +88,12 @@ classdef Lab3
             title(sprintf('Overlay Bounds K = %i', K))
         end
         
-        function Q2_4(K1, K2)
+        function Q4(K1, K2)
             close all;
             I = imread('tiger1.jpg');
             L = 25;              % number of iterations
             scale_factor = 1.0;  % image downscale factor
-            image_sigma = 2.0;   % image preblurring scale
+            image_sigma = 1.0;   % image preblurring scale
             
             I = imresize(I, scale_factor);
             Iback = I;
@@ -103,14 +103,14 @@ classdef Lab3
             
             % Calc for K1
             tic
-            [ segm, centers, conv, error] =kmeans_segm(I, K1, L, 0,0);
+            [ segm, centers, conv, error] =kmeans_segm2(I, K1, L, 0,0);
             toc
             Inew1 = mean_segments(Iback, segm);
             I1 = overlay_bounds(Iback, segm);
             
             % Calc for K2
             tic
-            [ segm, centers, conv, error] =kmeans_segm(I, K2, L, 1,1);
+            [ segm, centers, conv, error] =kmeans_segm2(I, K2, L, 1,0);
             toc
             Inew2 = mean_segments(Iback, segm);
             I2 = overlay_bounds(Iback, segm);
@@ -129,6 +129,33 @@ classdef Lab3
             imshow(I2)
             title(sprintf('Overlay Bounds K = %i', K2))
        
+        end
+        
+        function Q5(s_band, c_band, I)
+            close all;
+            scale_factor = 0.5;       % image downscale factor
+            spatial_bandwidth = s_band; %10.0;  % spatial bandwidth
+            colour_bandwidth = c_band; %5.0;   % colour bandwidth
+            num_iterations = 40;      % number of mean-shift iterations
+            image_sigma = 1.0;        % image preblurring scale
+
+            I = imresize(I, scale_factor);
+            Iback = I;
+            d = 2*ceil(image_sigma*2) + 1;
+            h = fspecial('gaussian', [d d], image_sigma);
+            I = imfilter(I, h);
+
+            segm = mean_shift_segm(I, spatial_bandwidth, colour_bandwidth, num_iterations);
+            Inew = mean_segments(Iback, segm);
+            I = overlay_bounds(Iback, segm);
+            imwrite(Inew,'result/meanshift1.png')
+            imwrite(I,'result/meanshift2.png')
+            subplot(1,2,1); 
+            imshow(Inew);
+            title('Segmentation')
+            subplot(1,2,2); 
+            imshow(I);
+            title('Overlay Bounds')
         end
         
     end

@@ -1,4 +1,4 @@
-function [ segmentation, centers, conv, error] = kmeans_segm(image, K, L, showImg, showConv) 
+function [ segmentation, centers ] = kmeans_segm(image, K, L, seed) 
     %Let X be a set of pixels and V be a set of K cluster centers in 3D (R,G,B).
 
     % Use 2D matrix instead of 3D
@@ -32,14 +32,7 @@ function [ segmentation, centers, conv, error] = kmeans_segm(image, K, L, showIm
             %     Recompute all distances between pixels and cluster centers 
             D = pdist2(I_flat, centers);
         end
-        if showImg == 1
-            Inew = mean_segments(image,segmentation);
-            imshow(Inew)
-            drawnow
-            title(sprintf('K = %i', K))
-            pause(1/i);
-        end
-        
+       
         if i>4 && round(error(i)./max(error(:)),2)==round(error(i-4)./max(error(:)),2) && conv==0
             conv = i;
         end
@@ -47,13 +40,10 @@ function [ segmentation, centers, conv, error] = kmeans_segm(image, K, L, showIm
     [Y,segmentation] = min(D,[],2);
     error(i+1) = sum(Y(:));
     error = error./max(error(:));
-    if showConv == 1
-        figure()
-        plot(1:L+1,error)
-    end
-    centers = uint8(centers);
+    
+    centers = single(centers);
     segmentation = reshape(segmentation,H,W);
-    used_classes = unique(segmentation)
+    used_classes = unique(segmentation);
     disp('Converged after')
     conv 
 end
