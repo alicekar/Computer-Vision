@@ -9,6 +9,7 @@ import Lab3.*;
 
 % Question 2
 % OBS, this parts takes some time to run
+%I2 = imread('orange.jpg');
 I2 = imread('tiger1.jpg');
 K = 10;               % number of clusters used
 L = 25;              % number of iterations
@@ -38,14 +39,8 @@ Lab3.Q5(6,4,I5)
 %% Question 7
 % args: ncuts_thresh (cutting threshold), min_area (minimum area of
 % segment), max_depth (maximum splitting depth), colour_bandwidth 
-I7 = imread('orange.jpg');
-Lab3.Q7(0.1,80,8,20, I7)        
-%keyboard
-%% Question 10
-% % args: ncuts_thresh (cutting threshold), min_area (minimum area of
-% segment), max_depth (maximum splitting depth), colour_bandwidth, radius 
-I10 = imread('orange.jpg');
-Lab3.Q10(0.1,80,8,20, I10, 4)  
+I7 = imread('tiger2.jpg');
+Lab3.Q7(0.1,300,7,12,I7)            %0.2,200,8,20,I7
 %keyboard
 %%
 clear all;

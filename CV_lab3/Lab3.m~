@@ -182,9 +182,9 @@ classdef Lab3
 
         end
         
-        function Q10(ncuts_thresh, min_area, max_depth, colour_bandwidth, I, r)
+        function Q7(ncuts_thresh, min_area, max_depth, colour_bandwidth, I)
             %close all;
-            radius = r;              % maximum neighbourhood distance
+            radius = 3;              % maximum neighbourhood distance
             scale_factor = 0.4;      % image downscale factor
             image_sigma = 2.0;       % image preblurring scale
             
