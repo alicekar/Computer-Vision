@@ -13,7 +13,7 @@ classdef Lab3
             conv_points = [];
             for i = 1:iters
                 tic
-                [ segm, centers, conv, error] =kmeans_segm2(I, K, L, 0,0);
+                [ segm, centers, conv, error] =kmeans_segm2(I, K, L, 0,0,'3D');
                 conv_points = [conv_points, conv];
                 all_errors(i,:) = error;
                 toc
@@ -61,14 +61,14 @@ classdef Lab3
             
             % Calc for K-1 to show difference
             tic
-            [ segm, centers, conv, error] =kmeans_segm2(I, K-diff, L, 0,0);
+            [ segm, centers, conv, error] =kmeans_segm2(I, K-diff, L, 0,0,'3D');
             toc
             Inew1 = mean_segments(Iback, segm);
             I1 = overlay_bounds(Iback, segm);
             
             % Show simulation for K
             tic
-            [ segm, centers, conv, error] =kmeans_segm2(I, K, L, 1,0);
+            [ segm, centers, conv, error] =kmeans_segm2(I, K, L, 1,0,'3D');
             toc
             Inew2 = mean_segments(Iback, segm);
             I2 = overlay_bounds(Iback, segm);
@@ -103,14 +103,14 @@ classdef Lab3
             
             % Calc for K1
             tic
-            [ segm, centers, conv, error] =kmeans_segm2(I, K1, L, 0,0);
+            [ segm, centers, conv, error] =kmeans_segm2(I, K1, L, 0,0,'3D');
             toc
             Inew1 = mean_segments(Iback, segm);
             I1 = overlay_bounds(Iback, segm);
             
             % Calc for K2
             tic
-            [ segm, centers, conv, error] =kmeans_segm2(I, K2, L, 1,0);
+            [ segm, centers, conv, error] =kmeans_segm2(I, K2, L, 1,0,'3D');
             toc
             Inew2 = mean_segments(Iback, segm);
             I2 = overlay_bounds(Iback, segm);
@@ -205,6 +205,21 @@ classdef Lab3
             subplot(1,2,2); 
             imshow(I);
             title('Overlay Bounds')
+        end
+        
+        function Q11(scale_factor, area, K, alpha, sigma, I)
+            close all;
+            I = imresize(I, scale_factor);
+            Iback = I;
+            area = int16(area*scale_factor);
+            [ segm, prior ] = graphcut_segm(I, area, K, alpha, sigma);
+
+            Inew = mean_segments(Iback, segm);
+            I = overlay_bounds(Iback, segm);
+            subplot(2,2,1); imshow(Inew);
+            subplot(2,2,2); imshow(I);
+            subplot(2,2,3); imshow(prior);
+
         end
     end
 end

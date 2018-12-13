@@ -1,12 +1,16 @@
-function [ segmentation, centers, conv, error] = kmeans_segm2(image, K, L, showImg, showConv) 
+function [ segmentation, centers, conv, error] = kmeans_segm2(image, K, L, showImg, showConv, type) 
     %Let X be a set of pixels and V be a set of K cluster centers in 3D (R,G,B).
 
     % Use 2D matrix instead of 3D
-    H = size(image,1);
-    W = size(image,2);
-    I_flat = reshape(image,H*W,3);
-    I_flat = double(I_flat);
-    
+    if strcmpi('3D',type)
+        [H,W,c] = size(image);
+        I_flat = reshape(image,H*W,c);
+        I_flat = double(I_flat);
+    elseif strcmpi('2D',type)
+        H = size(image,1);
+        W = 1;
+        I_flat = double(image);
+    end
     %  Randomly initialize the K cluster centers
     r_idx = randperm(size(I_flat,1),K);
     centers = I_flat(r_idx, :);
@@ -51,10 +55,9 @@ function [ segmentation, centers, conv, error] = kmeans_segm2(image, K, L, showI
         figure()
         plot(1:L+1,error)
     end
-    %centers = uint8(centers);
     centers = single(centers);
     segmentation = reshape(segmentation,H,W);
-    used_classes = unique(segmentation)
-    disp('Converged after')
-    conv 
+    used_classes = unique(segmentation);
+    %disp('Converged after')
+    conv; 
 end

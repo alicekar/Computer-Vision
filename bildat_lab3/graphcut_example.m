@@ -4,7 +4,7 @@ K = 16;                      % number of mixture components
 alpha = 8.0;                 % maximum edge cost
 sigma = 10.0;                % edge cost decay factor
 
-I = imread('tiger1.jpg');
+I = imread('orange.jpg');
 I = imresize(I, scale_factor);
 Iback = I;
 area = int16(area*scale_factor);

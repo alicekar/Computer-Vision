@@ -47,15 +47,48 @@ Lab3.Q7(0.1,80,8,20, I7)
 I10 = imread('orange.jpg');
 Lab3.Q10(0.1,80,8,20, I10, 4)  
 %keyboard
+%% Question 11
+scale_factor = 0.5;          % image downscale factor
+area = [ 80, 110, 570, 300 ]; % image region to train foreground with
+K = 2;                      % number of mixture components
+alpha = 10;%8.0;                 % maximum edge cost
+sigma = 4; %10
+I11 = imread('tiger1.jpg');
+Lab3.Q11(scale_factor, area, K, alpha, sigma, I11)
+%keyboard
 %%
 clear all;
 close all;
+%{
 im = imread('orange.jpg');
-size(im)
-im(:,:,1);
 [segmentation, centers ]=kmeans_segm(im, 8, 8, 3);
-im(1,1,:)
-size(im)
-class(centers)
+size(im);
+class(centers);
+%}
+K = 6;
+scale_factor = 0.5;          % image downscale factor
+area = [ 80, 110, 570, 300 ];
+I = imread('tiger1.jpg');
+I = imresize(I, scale_factor);
+size(I)
+%Iback = I;
+area = int16(area*scale_factor);
+[h,w,c] = size(I);
+dw = area(3) - area(1) + 1;
+dh = area(4) - area(2) + 1;
+mask = uint8([zeros(area(2)-1,w); zeros(dh,area(1)-1), ones(dh,dw), ...
+	     zeros(dh,w-area(3)); zeros(h-area(4),w)]);
+size(mask)
 
+fprob = mixture_prob(I, K, 2, mask);
+%{
+l = [5,6,0;2,0,0]
+%l(:,:,2) = [9,8,0; 0,7,0]
+%l = reshape(l, 2,6)
+o = [1,0,0;1,1,0]
+k = find(o==1)
+l.*o
+%l(~any(l,2),:) =[]
+%l(:,~any(l,1))=[]
+%}
 
