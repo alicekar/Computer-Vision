@@ -207,8 +207,9 @@ classdef Lab3
             title('Overlay Bounds')
         end
         
-        function Q11(scale_factor, area, K, alpha, sigma, I)
+        function Q11(scale_factor, area, K, alpha, sigma)
             close all;
+            I = imread('tiger1.jpg');
             I = imresize(I, scale_factor);
             Iback = I;
             area = int16(area*scale_factor);

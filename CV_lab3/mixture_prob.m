@@ -12,7 +12,7 @@ function prob = mixture_prob(image, K, L, mask)
     [seg, mu] = kmeans_segm2(Mvec, K, 100, 0,0,'2D');
     
     cov = cell(K,1);
-    cov(:) = {0.05 * rand * eye(c)};%{eye(c)+0.1};
+    cov(:) = {0.05 *  eye(c)};%{eye(c)+0.1};
    
     w = zeros(1,K);
     for i = 1:K
