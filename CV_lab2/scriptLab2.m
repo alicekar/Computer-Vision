@@ -18,4 +18,19 @@ Lab2.Q4()
 %%
 Lab2.Q5()
 %keyboard
+%% 5 Extraction of edge segments
+% Args: scale tools, threshold tools, scale house, threshold house
+Lab2.Q7(6,50,2,60)
+%keyboard
 
+%% 6 Hough transform
+Lab2.Q8()
+%keyboard
+%%
+t = triangle128;
+figure(1)
+showgrey(t)
+figure(2)
+c = zerocrosscurves(t-128);
+overlaycurves(t, c)
+%showgrey(printcurves(t, c));

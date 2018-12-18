@@ -185,5 +185,40 @@ classdef Lab2
                 title(sprintf('Scale: %0.2d',scales(i)))
             end
         end
+        
+        function Q7(s_tools, t_tools, s_house, t_house)
+            close all;
+            tools = few256;
+            house = godthem256; 
+            
+            warning('off','all')
+            
+            curves_tools = extractedge(tools, s_tools, t_tools);
+            curves_house = extractedge(house, s_house, t_house);
+            
+            figure()
+            subplot(1,2,1)
+            overlaycurves(tools, curves_tools)
+            title(sprintf('Scale: %0.2d, threshold: %0.2d',s_tools, t_tools))
+            subplot(1,2,2)
+            overlaycurves(house, curves_house)
+            title(sprintf('Scale: %0.2d, threshold: %0.2d',s_house, t_house))
+        end
+        
+        function Q8()
+            % Compute a line for each one of the strongest responses in the accumulator
+            % Overlay these curves on the gradient magnitude image 
+            pic = triangle128;
+            scale = 0.5;%1;
+            threshold = 40; %200
+
+            ntheta = 300;
+            nrho = 500;
+            nlines = 4;
+            verbose = 2;
+            [linepar, ~] = houghedgeline(pic, scale, threshold, ...
+                     nrho, ntheta, nlines, verbose);
+            gen_lines(linepar,pic);
+        end
     end
 end

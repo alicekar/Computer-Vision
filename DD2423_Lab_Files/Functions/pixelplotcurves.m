@@ -7,7 +7,7 @@ trypointer = 1;
 
 numcurves = 0;
 
-while trypointer <= insize,
+while trypointer <= insize
   polylength = curves(2, trypointer);
 
   numcurves = numcurves + 1;
@@ -22,6 +22,7 @@ while trypointer <= insize,
 
     trypointer = trypointer + 1;
   end
+  image(round(curves(2, 2)), round(curves(1, 2))) = 255;
 end
 
 pixels = image;

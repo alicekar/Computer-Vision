@@ -1,5 +1,5 @@
 function pixels = Lvvtilde(inpic, shape)
-     if (nargin < 3)
+     if (nargin < 2)
        shape = 'same';
      end
      % x is pointing downwards, y to the right
