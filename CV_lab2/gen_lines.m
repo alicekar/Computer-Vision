@@ -18,6 +18,6 @@ function outcurves = gen_lines(linepar, pic)
         outcurves(1, 4*(idx-1) + 4) = y0+dy;
     end
     figure()
-    overlaycurves(pic, outcurves);
+    overlaycurves2(pic, outcurves,2);
     axis([0, size(pic,1), 0, size(pic,2)])
 end

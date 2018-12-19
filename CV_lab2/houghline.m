@@ -1,5 +1,5 @@
 function [linepar, acc] = houghline(curves, magnitude, nrho, ntheta,... 
-                           threshold, nlines, verbose)
+                           threshold, nlines, bin_smooth, K_bin, verbose, power)
     % Check if input appear to be valid
     % Allocate accumulator space
     acc = zeros(nrho,ntheta);
@@ -44,14 +44,18 @@ function [linepar, acc] = houghline(curves, magnitude, nrho, ntheta,...
                    rho_idx = rho_idx(end);
                 end   
                 % Update the accumulator, adding votes
-                acc(rho_idx,i) = acc(rho_idx,i)+1;    
+                if nargin < 10
+                    acc(rho_idx,i) = acc(rho_idx,i)+1;
+                else
+                    acc(rho_idx,i) = acc(rho_idx,i)+magnitude(round(x),round(y))^power;
+                end
             end
             trypointer = trypointer + 1;
         end
     end      
-    
+
     % Smooth accumulator
-    acc = binsepsmoothiter(acc, 0.1, 20);
+    acc = binsepsmoothiter(acc, bin_smooth, K_bin);
     if verbose > 0 
         figure()
         showgrey(acc)

@@ -198,27 +198,62 @@ classdef Lab2
             
             figure()
             subplot(1,2,1)
-            overlaycurves(tools, curves_tools)
+            overlaycurves2(tools, curves_tools)
             title(sprintf('Scale: %0.2d, threshold: %0.2d',s_tools, t_tools))
             subplot(1,2,2)
-            overlaycurves(house, curves_house)
+            overlaycurves2(house, curves_house)
             title(sprintf('Scale: %0.2d, threshold: %0.2d',s_house, t_house))
         end
         
-        function Q8()
+        function Q89(pic, scale, threshold, nrho, ntheta, nlines, dt_bin, K_bin, verbose)
             % Compute a line for each one of the strongest responses in the accumulator
             % Overlay these curves on the gradient magnitude image 
-            pic = triangle128;
-            scale = 0.5;%1;
-            threshold = 40; %200
-
-            ntheta = 300;
-            nrho = 500;
-            nlines = 4;
-            verbose = 2;
+            tic;
             [linepar, ~] = houghedgeline(pic, scale, threshold, ...
-                     nrho, ntheta, nlines, verbose);
+                     nrho, ntheta, nlines, dt_bin, K_bin, verbose);
+            toc;
+            gen_lines(linepar,pic);
+            %linepar
+        end
+        
+        function time()
+            close all;
+            pic = few256;
+            n_points = 41;
+            rounds = 10;
+            
+            %N_thetas = round(linspace(10,210,n_points));
+            N_thetas = zeros(1,n_points)+80;
+            N_rho = round(linspace(100,2100,n_points));
+            times = zeros(rounds, n_points);
+            N_cells = [];
+            for r = 1:rounds
+                for i = 1:length(N_rho)
+                    tic;
+                    [~, ~] = houghedgeline(pic, 0.5, 80, ...
+                         N_rho(i), N_thetas(i), 10, 0, 0, 0);
+                    t = toc
+                    times(r,i) = t;
+                    if r == 1
+                        N_cells = [N_cells, N_rho(i)*N_thetas(i)];
+                    end
+                    %gen_lines(linepar,pic);
+                end
+            end
+            figure()
+            plot(mean(times,1),N_cells)
+            title('Computational time due to size of accumulator')
+            xlabel('Computational time')
+            ylabel('Number of cells')
+        end
+        
+        function Q10(pic, scale, threshold, nrho, ntheta, nlines, dt_bin, K_bin, verbose, power)
+            tic;
+            [linepar, ~] = houghedgeline(pic, scale, threshold, ...
+                     nrho, ntheta, nlines, dt_bin, K_bin, verbose, power);
+            toc;
             gen_lines(linepar,pic);
         end
+        
     end
 end
